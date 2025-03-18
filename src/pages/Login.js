@@ -4,35 +4,63 @@ import API from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  console.log("Login component rendered"); // ✅ Check if this appears in the browser console
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState(""); // For success/error messages
   const [openSnackbar, setOpenSnackbar] = useState(false); // For Snackbar visibility
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    try {
-      const res = await API.post("/sign_in", form);
-      localStorage.setItem("token", res.data.token); // Store the token in localStorage
-      setMessage(res.data.message); // Set success message
-      setOpenSnackbar(true); // Show Snackbar
+  // const handleSubmit = async () => {
+  //   try {
+  //     const res = await API.post("/sign_in", form);
+  //     localStorage.setItem("token", res.data.token); // Store the token in localStorage
+  //     setMessage(res.data.message); // Set success message
+  //     setOpenSnackbar(true); // Show Snackbar
 
-      // Redirect to the specified URL after a delay
-      setTimeout(() => {
-        window.location.href = res.data.redirectUrl; // Redirect to the external link
-      }, 2000); // 2 seconds delay
-    } catch (err) {
-      if (err.response) {
-        setMessage(err.response.data.message); // Set error message from server
-      } else {
-        setMessage("An unexpected error occurred"); // Set generic error message
-      }
-      setOpenSnackbar(true); // Show Snackbar
+  //     // Redirect to the specified URL after a delay
+  //     setTimeout(() => {
+  //       window.location.href = res.data.redirectUrl; // Redirect to the external link
+  //     }, 2000); // 2 seconds delay
+  //   } catch (err) {
+  //     if (err.response) {
+  //       setMessage(err.response.data.message); // Set error message from server
+  //     } else {
+  //       setMessage("An unexpected error occurred"); // Set generic error message
+  //     }
+  //     setOpenSnackbar(true); // Show Snackbar
+  //   }
+  // };
+
+
+ // In Login.js, update the handleSubmit function:
+// Login.js
+const handleSubmit = async () => {
+  try {
+    const res = await API.post("/sign_in", form);
+    localStorage.setItem("token", res.data.token);
+    setMessage("Login successful! Redirecting...");
+    setOpenSnackbar(true);
+
+    // Redirect to the external URL after 2 seconds
+    setTimeout(() => {
+      window.location.href = "create-job";
+    }, 2000);
+  } catch (err) {
+    if (err.response) {
+      setMessage(err.response.data.message);
+    } else {
+      setMessage("An unexpected error occurred");
     }
-  };
+    setOpenSnackbar(true);
+  }
+};
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false); // Close Snackbar
-  };
+const handleCloseSnackbar = () => {
+  setOpenSnackbar(false);
+};
+
+
 
   return (
     <Container maxWidth="sm">

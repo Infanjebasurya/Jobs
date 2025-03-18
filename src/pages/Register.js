@@ -46,14 +46,43 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    try {
-      await API.post("/sign_up", form);
-      navigate("/login");
-    } catch (err) {
-      alert("Registration failed");
-    }
-  };
+  // const handleSubmit = async () => {
+  //   try {
+  //     await API.post("/sign_up", form);
+  //     navigate("/login");
+  //   } catch (err) {
+  //     alert("Registration failed");
+  //   }
+  // };
+
+
+  // Register.js
+// Register.js
+// Register.js
+// const handleSubmit = async () => {
+  // try {
+    // await API.post("/sign_up", form);
+    // localStorage.setItem("hasRegistered", "true"); // ✅ Ensure this line runs
+    // navigate("/login"); // Redirect to login
+  // } catch (err) {
+    // Handle errors
+  // }
+// };
+  
+
+
+const handleSubmit = async () => {
+  try {
+    const response = await API.post("/sign_up", form);
+    console.log("Response:", response.data);
+    localStorage.setItem("hasRegistered", "true");
+    navigate("/login");
+  } catch (err) {
+    console.error("Error during registration:", err);
+    alert("Registration failed");
+  }
+};
+
 
   return (
     <Container maxWidth="sm">
